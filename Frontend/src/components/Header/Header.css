@@ -1,0 +1,14 @@
+.header-content{
+    min-height: 75vh;
+    background: linear-gradient(rgba(118, 111, 121, 0.3), rgba(47, 42, 49, 0.5)), url("../../images/openBook.jpg") center/cover no-repeat;
+    flex-direction: column;
+}
+.header-title{
+    font-size: 4.2rem;
+}
+.header-text{
+    margin-top: -1.8rem;
+    margin-bottom: 2.8rem;
+    opacity: 0.8;
+    max-width: 770px;
+}

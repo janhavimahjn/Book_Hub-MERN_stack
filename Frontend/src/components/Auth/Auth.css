@@ -1,0 +1,129 @@
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("../../images/openBook.jpg");
+    font-family: Arial, sans-serif;
+  }
+  
+  .auth-form {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .auth-form h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+  }
+ 
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus {
+    border-color: #d900ff89;
+  }
+  
+  /* Error Message */
+  .error {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  /* Button Styles */
+  .auth-button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #69037d86;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-button:hover {
+    background-color: #9619ac;
+  }
+  
+  /* Toggle Auth Text */
+  .toggle-auth {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .toggle-auth span {
+    color: #c81dd795;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .toggle-auth span:hover {
+    color: #4b0246;
+  }
+
+  /* Responsive Styles */
+@media (max-width: 768px) {
+  .auth-form {
+    padding: 20px 15px;
+  }
+
+  .auth-form h2 {
+    font-size: 20px;
+  }
+
+  .form-group input {
+    font-size: 13px;
+  }
+
+  .auth-button {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-form {
+    padding: 15px 10px;
+  }
+
+  .form-group input {
+    padding: 8px;
+  }
+
+  .auth-button {
+    padding: 10px;
+  }
+}
+  
