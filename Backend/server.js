@@ -2,20 +2,24 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import connectDB from "./config/db.js";
+import connectDB from "./config/db.js"; // ✅ Only one import
 import bcrypt from "bcryptjs";
 import path from "path";
 import { fileURLToPath } from "url";
-import connectDB from "./config/db.js";
 import User from "./Model/User.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
 
 dotenv.config();
 connectDB(); // Connect to MongoDB
 
+if (!process.env.MONGO_URI) {
+  console.error("❌ MONGO_URI is not defined in .env file");
+  process.exit(1);
+}
+
 const app = express();
-app.use(express.json()); // ✅ Parses JSON request body
-app.use(express.urlencoded({ extended: true })); // ✅ Parses form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Fix __dirname in ES Modules
@@ -23,7 +27,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "../Frontend/build")));
-
 app.get("*", (_req, res) => {
   res.sendFile(path.resolve(__dirname, "../Frontend/build/index.html"));
 });
@@ -47,8 +50,6 @@ app.post("/api/auth/register", async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    console.log("🔍 Incoming Register Request:", req.body); // Log request data
-
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -69,8 +70,6 @@ app.post("/api/auth/register", async (req, res) => {
       expiresIn: "7d",
     });
 
-    console.log("✅ User Registered:", user);
-
     res.json({ message: "User registered successfully", token, user });
   } catch (error) {
     console.error("❌ Registration Error:", error.message);
@@ -82,8 +81,6 @@ app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    console.log("🔍 Incoming Login Request:", req.body);
-
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
@@ -103,8 +100,6 @@ app.post("/api/auth/login", async (req, res) => {
       expiresIn: "7d",
     });
 
-    console.log("✅ Login Successful:", user.email);
-
     res.json({ message: "Login successful", token, user });
   } catch (error) {
     console.error("❌ Login Error:", error.message);
@@ -115,11 +110,10 @@ app.post("/api/auth/login", async (req, res) => {
 // Import Routes
 app.use("/api/feedback", feedbackRoutes);
 
-
 // Default Route
 app.get("/", (req, res) => {
   res.send("Welcome to the Contact API");
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
