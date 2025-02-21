@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import connectDB from "./config/db.js"; // ✅ Only one import
+import { connectDB } from "./config/db.js"; 
 import bcrypt from "bcryptjs";
 import path from "path";
 import { fileURLToPath } from "url";
