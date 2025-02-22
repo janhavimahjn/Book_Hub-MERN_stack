@@ -43,7 +43,7 @@ const ContactUs = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/feedback/submit",
+        "https://book-hub-mern-stack.onrender.com/api/feedback/submit",
         formData
       );
       setSuccessMessage(response.data.message);
@@ -64,7 +64,7 @@ const ContactUs = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/feedback/submit-feedback",
+        "https://book-hub-mern-stack.onrender.com/api/feedback/submit-feedback",
         feedbackData
       );
       setSuccessMessage(response.data.message);

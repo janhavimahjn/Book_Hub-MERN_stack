@@ -21,7 +21,7 @@ const Auth = () => {
     if (isLogin) {
       // Login logic
       try {
-        const { data } = await axios.post('http://localhost:5000/api/auth/login', {
+        const { data } = await axios.post('https://book-hub-mern-stack.onrender.com/api/auth/login', {
           email,
           password,
         });
@@ -51,7 +51,7 @@ const Auth = () => {
       }
 
       try {
-        const { data } = await axios.post('http://localhost:5000/api/auth/register', {
+        const { data } = await axios.post('https://book-hub-mern-stack.onrender.com/api/auth/register', {
           name, // Include name
           email,
           password,

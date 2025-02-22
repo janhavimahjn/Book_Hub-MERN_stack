@@ -20,7 +20,10 @@ if (!process.env.MONGO_URI) {
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: "https://book-hub-mern-stack.onrender.com",
+  credentials: true,
+}));
 
 // Fix __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
