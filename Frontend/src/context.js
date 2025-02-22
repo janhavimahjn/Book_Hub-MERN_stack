@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 
-const URL = "http://openlibrary.org/search.json?title=";
+const URL = "https://book-hub-mern-stack.onrender.com/http://openlibrary.org/search.json?title=";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
