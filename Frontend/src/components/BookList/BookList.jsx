@@ -6,10 +6,14 @@ const BooksList = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}`)
+    fetch(`${API_URL}/search?query=${query}`, {
+      method: "GET",
+      credentials: "include", 
+    })
       .then((res) => res.json())
       .then((data) => setBooks(data))
       .catch((error) => console.error("Error fetching books:", error));
+    
   }, []);
 
   return (

@@ -4,32 +4,7 @@ import Book from "../Model/Book.js";
 
 const router = express.Router();
 
-// 📌 Get All Books from MongoDB
-router.get("/", async (req, res) => {
-  try {
-    const books = await Book.find();
-    res.json(books);
-  } catch (error) {
-    console.error("❌ Error fetching books:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// 📌 Get a Single Book by ID
-router.get("/:id", async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
-    if (!book) {
-      return res.status(404).json({ message: "Book not found" });
-    }
-    res.json(book);
-  } catch (error) {
-    console.error("❌ Error fetching book:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// 📌 Search Books: MongoDB First, Then Open Library API
+// 📌 Global Search: MongoDB First, Then Open Library API
 router.get("/search", async (req, res) => {
   const { query } = req.query;
   if (!query) {
@@ -37,34 +12,47 @@ router.get("/search", async (req, res) => {
   }
 
   try {
-    let books = await Book.find({ $text: { $search: query } });
+    console.log(`🔍 Searching for: ${query}`);
 
+    // 🔹 Step 1: Search MongoDB for Existing Books
+    let books = await Book.find({ title: { $regex: query, $options: "i" } });
+
+    console.log(`📚 Books found in MongoDB: ${books.length}`);
+
+    // 🔹 Step 2: If Books Are Missing, Fetch from Open Library API
     if (books.length === 0) {
       console.log("📌 Fetching from Open Library API...");
 
       const response = await axios.get(`https://openlibrary.org/search.json?q=${query}`);
-      const openLibBooks = response.data.docs.slice(0, 5); // Limit to 5 books
+      const openLibBooks = response.data.docs.slice(0, 5); // Limit results
 
       if (openLibBooks.length > 0) {
         books = openLibBooks.map((book) => ({
           title: book.title,
           author: book.author_name ? book.author_name[0] : "Unknown",
-          description: "Description not available",
           coverImage: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : "",
           publishedYear: book.first_publish_year || null,
-          genre: "Unknown",
+          genre: book.subject ? book.subject[0] : "Unknown",
           price: 10.99,
         }));
 
-        await Book.insertMany(books);
-        console.log("✅ Books saved to MongoDB:", books);
+        // 🔹 Step 3: Insert New Books, Avoid Duplicates
+        for (const book of books) {
+          const exists = await Book.findOne({ title: book.title, author: book.author });
+          if (!exists) {
+            await Book.create(book);
+            console.log(`✅ Book added: ${book.title}`);
+          }
+        }
       }
     }
 
+    // 🔹 Step 4: Return Books (Either From MongoDB or API)
+    books = await Book.find({ title: { $regex: query, $options: "i" } });
     res.json(books);
   } catch (error) {
     console.error("❌ Error fetching books:", error.message);
-    res.status(500).json({ message: "Error fetching books from Open Library" });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
