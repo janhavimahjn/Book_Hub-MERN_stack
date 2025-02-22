@@ -8,6 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import User from "./Model/User.js";
 import feedbackRoutes from "./routes/feedbackRoutes.js";
+import bookRoutes from "./routes/bookRoutes.js";
 
 dotenv.config();
 connectDB(); // Connect to MongoDB
@@ -109,6 +110,8 @@ app.post("/api/auth/login", async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 });
+
+app.use("/api/books", bookRoutes);
 
 // Import Routes
 app.use("/api/feedback", feedbackRoutes);
