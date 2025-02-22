@@ -1,52 +1,34 @@
-import React from 'react';
-import { useGlobalContext } from '../../context';
-import Book from "../BookList/Book";
-import Loading from "../Loader/Loader";
-import coverImg from "../../images/cover_not_found.jpg";
-import "./BookList.css";
-import {FaArrowLeft} from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 
-//https://covers.openlibrary.org/b/id/240727-S.jpg
+const BooksList = () => {
+  const [books, setBooks] = useState([]);
 
-const BookList = () => {
-  const {books, loading, resultTitle} = useGlobalContext();
-  const navigate = useNavigate();
-  const booksWithCovers = books.map((singleBook) => {
-    return {
-      ...singleBook,
-      // removing /works/ to get only id
-      id: (singleBook.id).replace("/works/", ""),
-      cover_img: singleBook.cover_id ? `https://book-hub-mern-stack.onrender.com/https://covers.openlibrary.org/b/id/${singleBook.cover_id}-L.jpg` : coverImg
-    }
-  });
-
-  if(loading) return <Loading />;
+  useEffect(() => {
+    fetch(`${API_URL}`)
+      .then((res) => res.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error("Error fetching books:", error));
+  }, []);
 
   return (
-    <section className='booklist'>
-      <div className='container'>
-              <button type='button' className='flex flex-c back-btn' onClick={() => navigate("/")}>
-                <FaArrowLeft size = {22} />
-                <span className='fs-18 fw-6'>Go Back</span>
-              </button>
-      </ div>
-      <div className='container'>
-        <div className='section-title'>
-          <h2>{resultTitle}</h2>
-        </div>
-        <div className='booklist-content grid'>
-          {
-            booksWithCovers.slice(0, 30).map((item, index) => {
-              return (
-                <Book key = {index} {...item} />
-              )
-            })
-          }
-        </div>
-      </div>
-    </section>
-  )
-}
+    <div>
+      <h1>📚 Book List</h1>
+      {books.length === 0 ? <p>No books found</p> : (
+        <ul>
+          {books.map((book) => (
+            <li key={book._id}>
+              <Link to={`/books/${book._id}`}>
+                <img src={book.coverImage} alt={book.title} width="100" />
+                <h3>{book.title}</h3>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
 
-export default BookList
+export default BooksList;
