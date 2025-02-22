@@ -14,4 +14,4 @@ const connectDB = async () => {
 };
 
 // ✅ Named export (not default)
-export { connectDB };
+export default connectDB;
