@@ -1,32 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { API_URL } from "../../config.js";
+import React, { useState } from "react";
+import { API_URL } from "../../config";
 
 const BooksList = () => {
   const [books, setBooks] = useState([]);
+  const [query, setQuery] = useState("");  // ✅ Define query state
 
-  useEffect(() => {
-    fetch(`${API_URL}/search?query=${query}`, {
-      method: "GET",
-      credentials: "include", 
-    })
-      .then((res) => res.json())
-      .then((data) => setBooks(data))
-      .catch((error) => console.error("Error fetching books:", error));
+  const searchBooks = async () => {
+    if (!query.trim()) return;  // ✅ Ensure query is not empty
     
-  }, []);
+    try {
+      const res = await fetch(`${API_URL}/search?query=${query}`);
+      const data = await res.json();
+      setBooks(data);
+    } catch (error) {
+      console.error("❌ Error fetching books:", error);
+    }
+  };
 
   return (
     <div>
-      <h1>📚 Book List</h1>
+      <h1>📚 Search Books</h1>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)} // ✅ Ensure `query` updates
+        placeholder="Search for books..."
+      />
+      <button onClick={searchBooks}>Search</button>
+
       {books.length === 0 ? <p>No books found</p> : (
         <ul>
-          {books.map((book) => (
-            <li key={book._id}>
-              <Link to={`/books/${book._id}`}>
-                <img src={book.coverImage} alt={book.title} width="100" />
-                <h3>{book.title}</h3>
-              </Link>
+          {books.map((book, index) => (
+            <li key={index}>
+              <img src={book.coverImage} alt={book.title} width="100" />
+              <h3>{book.title}</h3>
+              <p>{book.author}</p>
             </li>
           ))}
         </ul>
