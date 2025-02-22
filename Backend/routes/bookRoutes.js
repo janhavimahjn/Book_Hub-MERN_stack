@@ -1,5 +1,6 @@
 import express from "express";
 import axios from "axios";
+import Book from "../Model/Book";
 
 const router = express.Router();
 
@@ -17,6 +18,15 @@ router.get("/search", async (req, res) => {
     console.error("Error fetching books:", error.message);
     res.status(500).json({ message: "Error fetching books from Open Library" });
   }
+  if (Book.length > 0) {
+    try {
+      const savedBooks = await Book.insertMany(Book);
+      console.log("✅ Books saved to MongoDB:", savedBooks);
+    } catch (error) {
+      console.error("❌ MongoDB Save Error:", error.message);
+    }
+  }
+  
 });
 
 export default router;
