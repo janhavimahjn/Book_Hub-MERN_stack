@@ -1,46 +1,52 @@
-import React, { useState } from "react";
-import { API_URL } from "../../config";
+import React from 'react';
+import { useGlobalContext } from '../../context';
+import Book from "../BookList/Book";
+import Loading from "../Loader/Loader";
+import coverImg from "../../images/cover_not_found.jpg";
+import "./BookList.css";
+import {FaArrowLeft} from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
-const BooksList = () => {
-  const [books, setBooks] = useState([]);
-  const [query, setQuery] = useState("");  // ✅ Define query state
+//https://covers.openlibrary.org/b/id/240727-S.jpg
 
-  const searchBooks = async () => {
-    if (!query.trim()) return;  // ✅ Ensure query is not empty
-    
-    try {
-      const res = await fetch(`${API_URL}/search?query=${query}`);
-      const data = await res.json();
-      setBooks(data);
-    } catch (error) {
-      console.error("❌ Error fetching books:", error);
+const BookList = () => {
+  const {books, loading, resultTitle} = useGlobalContext();
+  const navigate = useNavigate();
+  const booksWithCovers = books.map((singleBook) => {
+    return {
+      ...singleBook,
+      // removing /works/ to get only id
+      id: (singleBook.id).replace("/works/", ""),
+      cover_img: singleBook.cover_id ? `https://covers.openlibrary.org/b/id/${singleBook.cover_id}-L.jpg` : coverImg
     }
-  };
+  });
+
+  if(loading) return <Loading />;
 
   return (
-    <div>
-      <h1>📚 Search Books</h1>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)} // ✅ Ensure `query` updates
-        placeholder="Search for books..."
-      />
-      <button onClick={searchBooks}>Search</button>
+    <section className='booklist'>
+      <div className='container'>
+              <button type='button' className='flex flex-c back-btn' onClick={() => navigate("/")}>
+                <FaArrowLeft size = {22} />
+                <span className='fs-18 fw-6'>Go Back</span>
+              </button>
+      </ div>
+      <div className='container'>
+        <div className='section-title'>
+          <h2>{resultTitle}</h2>
+        </div>
+        <div className='booklist-content grid'>
+          {
+            booksWithCovers.slice(0, 30).map((item, index) => {
+              return (
+                <Book key = {index} {...item} />
+              )
+            })
+          }
+        </div>
+      </div>
+    </section>
+  )
+}
 
-      {books.length === 0 ? <p>No books found</p> : (
-        <ul>
-          {books.map((book, index) => (
-            <li key={index}>
-              <img src={book.coverImage} alt={book.title} width="100" />
-              <h3>{book.title}</h3>
-              <p>{book.author}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-export default BooksList;
+export default BookList
