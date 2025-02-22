@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { API_URL } from "../config.js";
+import { API_URL } from "../src/config.js";
 
 const BookDetails = () => {
   const { id } = useParams();
