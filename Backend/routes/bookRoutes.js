@@ -23,14 +23,14 @@ router.get("/search", async (req, res) => {
     if (books.length === 0) {
       console.log("📌 Fetching from Open Library API...");
 
-      const response = await axios.get(`https://openlibrary.org/search.json?q=${query}`);
+      const response = await axios.get(`https://book-hub-mern-stack.onrender.com/https://openlibrary.org/search.json?q=${query}`);
       const openLibBooks = response.data.docs.slice(0, 5); // Limit results
 
       if (openLibBooks.length > 0) {
         books = openLibBooks.map((book) => ({
           title: book.title,
           author: book.author_name ? book.author_name[0] : "Unknown",
-          coverImage: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : "",
+          coverImage: book.cover_i ? `https://book-hub-mern-stack.onrender.com/https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : "",
           publishedYear: book.first_publish_year || null,
           genre: book.subject ? book.subject[0] : "Unknown",
           price: 10.99,

@@ -6,7 +6,7 @@ import "./BookDetails.css";
 import {FaArrowLeft} from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
-const URL = "https://openlibrary.org/works/";
+const URL = "https://book-hub-mern-stack.onrender.com/https://openlibrary.org/works/";
 
 const BookDetails = () => {
   const {id} = useParams();
@@ -27,7 +27,7 @@ const BookDetails = () => {
           const newBook = {
             description: description ? description.value : "No description found",
             title: title,
-            cover_img: covers ? `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg` : coverImg,
+            cover_img: covers ? `https://book-hub-mern-stack.onrender.com/https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg` : coverImg,
             subject_places: subject_places ? subject_places.join(", ") : "No subject places found",
             subject_times : subject_times ? subject_times.join(", ") : "No subject times found",
             subjects: subjects ? subjects.join(", ") : "No subjects found"
