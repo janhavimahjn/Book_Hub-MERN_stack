@@ -13,7 +13,7 @@ dotenv.config();
 connectDB(); // Connect to MongoDB
 
 if (!process.env.MONGO_URI) {
-  console.error("❌ MONGO_URI is not defined in .env file");
+  console.error(" MONGO_URI is not defined in .env file");
   process.exit(1);
 }
 

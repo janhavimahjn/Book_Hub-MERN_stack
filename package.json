@@ -1,4 +1,7 @@
 {
+  "name": "bookhub",
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -11,7 +14,6 @@
   "scripts": {
     "dev": "nodemon Backend/server.js",
     "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend",
-    "start": "nodemon Backend/server.js",
-    "type": "module"
+    "start": "nodemon Backend/server.js"
   }
 }

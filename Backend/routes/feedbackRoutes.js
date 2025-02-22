@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const Contact = require('../Model/Contact');
-const Feedback = require('../Model/Feedback');
+import { Router } from 'express';
+const router = Router();
+import Contact from '../Model/Contact.js';
+import Feedback from '../Model/Feedback.js';
 
 // 📌 Contact Form Submission Endpoint
 router.post('/submit', async (req, res) => {
@@ -41,4 +41,4 @@ router.post('/submit-feedback', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

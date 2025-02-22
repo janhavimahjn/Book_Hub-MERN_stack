@@ -1,4 +1,4 @@
-const Feedback = require('../Model/Feedback');
+import Feedback from '../Model/Feedback';
 
 // Handle contact form submission (step 1)
 const createContact = async (req, res) => {
@@ -46,4 +46,4 @@ const createFeedback = async (req, res) => {
   }
 };
 
-module.exports = { createContact, createFeedback };
+export default { createContact, createFeedback };
